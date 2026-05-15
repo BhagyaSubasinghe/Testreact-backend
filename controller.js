@@ -39,7 +39,7 @@ const adduser = (req, res, next) => {
 };
 
 const updateUser = (req, res, next) => {
-	const id = req.body.id;
+	const id = req.params.id;
 	const updateData = {
 		name: req.body.name,
 		email: req.body.email,
@@ -63,7 +63,7 @@ const updateUser = (req, res, next) => {
 };
 
 const deleteUser = (req, res, next) => {
-	const id = req.body.id;
+	const id = req.params.id;
 
 	User.findByIdAndDelete(id)
 		.then(response => {
