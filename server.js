@@ -11,7 +11,9 @@ const connect = async () => {
         console.log('Connected to MongoDB');
     } catch (error) {
         console.error('Error connecting to MongoDB:', error);
-        process.exit(1);
+        // Do not exit the process here; keep the server running so nodemon
+        // doesn't crash. Connection issues should be handled separately
+        // (e.g., fix the MONGODB_URI or ensure network/DNS access).
     }
 };
 

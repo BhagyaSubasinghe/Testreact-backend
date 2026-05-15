@@ -8,16 +8,20 @@ const getUsers = (req, res, next) => {
 			});
 		})
 		.catch(error => {
-			res.json({
-				message: 'An error occurred'
+			res.status(500).json({
+				message: 'An error occurred',
+				error: error.message
 			});
 		});
 };
 
 const adduser = (req, res, next) => {
 	const user = new User({
-		id: req.body.id,
-		name: req.body.name
+		name: req.body.name,
+		email: req.body.email,
+		role: req.body.role || 'User',
+		phone: req.body.phone || '',
+		notes: req.body.notes || ''
 	});
 
 	user.save()
@@ -27,25 +31,33 @@ const adduser = (req, res, next) => {
 			});
 		})
 		.catch(error => {
-			res.json({
-				message: 'An error occurred'
+			res.status(500).json({
+				message: 'An error occurred',
+				error: error.message
 			});
 		});
 };
 
 const updateUser = (req, res, next) => {
 	const id = req.body.id;
-	const name = req.body.name;
+	const updateData = {
+		name: req.body.name,
+		email: req.body.email,
+		role: req.body.role || 'User',
+		phone: req.body.phone || '',
+		notes: req.body.notes || ''
+	};
 
-	User.updateOne({ id: id }, { $set: { name: name } })
+	User.findByIdAndUpdate(id, { $set: updateData }, { new: true })
 		.then(response => {
 			res.json({
 				response
 			});
 		})
 		.catch(error => {
-			res.json({
-				message: 'An error occurred'
+			res.status(500).json({
+				message: 'An error occurred',
+				error: error.message
 			});
 		});
 };
@@ -53,15 +65,16 @@ const updateUser = (req, res, next) => {
 const deleteUser = (req, res, next) => {
 	const id = req.body.id;
 
-	User.deleteOne({ id: id })
+	User.findByIdAndDelete(id)
 		.then(response => {
 			res.json({
 				response
 			});
 		})
 		.catch(error => {
-			res.json({
-				message: 'An error occurred'
+			res.status(500).json({
+				message: 'An error occurred',
+				error: error.message
 			});
 		});
 };
